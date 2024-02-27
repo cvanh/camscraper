@@ -59,3 +59,21 @@ flowchart
     root --> backend
 ```
 
+## setting up
+The repo has multible micro services each doing something diffrent
+
+to start the kafka nodes run:
+`make run_infra`
+
+to start the scrapers run:
+`make run_scrape`
+
+to start the api/frontend run:
+`make run_site`
+
+
+## todos
+- [ ] setup kafka on docker compose and add it to makefile
+- [ ] setup scrapers on docker and add it to make file
+- [ ] setup api/fe and add to docker and makefile
+- [ ] setup logging
