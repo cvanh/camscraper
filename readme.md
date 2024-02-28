@@ -1,10 +1,12 @@
 ## camscraper
 a scraper to find the cheapest climbing cams in the same fashion as [diskprices.com](https://diskprices.com/). we will use the following attributes:
-- price per cam(if it is a set)
+- price 
+- amount
 - weight
-- manafacture product number
+- manafacture product number(mpn)
 - link to shop
 
+extra data about the cam is manually added and joined by mpn
 
 ## structure
 The scraper works with multible seprate scrapers which send data to the api via apache kafka. I a diagram this would look like this:
