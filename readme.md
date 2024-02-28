@@ -43,7 +43,7 @@ The folder structure for this project is the following:
 Title: folder setup
 ---
 
-flowchart 
+flowchart LR 
     root[./]
 
     scrapers[scrapers/]
