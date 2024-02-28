@@ -1,10 +1,18 @@
-FROM golang:1.19
+# syntax=docker/dockerfile:1
+
+FROM golang:1.21-alpine
 
 WORKDIR /app
+
+COPY go.mod go.sum ./
 
 # download deps
 RUN go mod download
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/build
+COPY *.go ./
 
-CMD ["/bin/build"]
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ./build 
+
+RUN chmod +x ./build
+
+CMD ["./build"]
