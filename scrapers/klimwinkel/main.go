@@ -1,3 +1,7 @@
+package klimwinkel
+
+import "fmt"
+
 func main(){
-fmt.
+	fmt.Println("hallo")
 }

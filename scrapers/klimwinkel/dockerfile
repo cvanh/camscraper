@@ -1,18 +1,10 @@
-FROM golang:1.19 AS builder
+FROM golang:1.19
 
 WORKDIR /app
 
 # download deps
 RUN go mod download
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o build
+RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/build
 
-FROM alpine
-
-WORKDIR /app
-
-COPY --from=builder /app/build ./
-
-USER noroot:noroot
-
-CMD ["/build"]
+CMD ["/bin/build"]
