@@ -17,7 +17,7 @@ func getCatagory() {
 	client := &http.Client{}
 	var data = strings.NewReader(`{
 	"alternative_options_photos": true,
-	"category_id": 127,
+	"category_id": 125,
 	"brands_filter": [],
 	"stock_filter": [],
 	"specs_filter": [],
