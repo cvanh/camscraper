@@ -1,5 +1,9 @@
 ## camscraper
-a scraper to find the cheapest climbing cams
+a scraper to find the cheapest climbing cams in the same fashion as [diskprices.com](https://diskprices.com/). we will use the following attributes:
+- price per cam(if it is a set)
+- weight
+- manafacture product number
+- link to shop
 
 
 ## structure
@@ -77,3 +81,4 @@ to start the api/frontend run:
 - [ ] setup scrapers on docker and add it to make file
 - [ ] setup api/fe and add to docker and makefile
 - [ ] setup logging
+- [ ] setup docker for scrapers
