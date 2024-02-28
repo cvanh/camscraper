@@ -1,49 +1,49 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
+	"strings"
 )
 
-func main(){
+func main() {
 	getCatagory()
-	fmt.Println("hallo")
 }
 
-
 // get list of products by catagory number(125 for nut and cams on klimwinkel)
-func getCatagory(){
+func getCatagory() {
 	client := &http.Client{}
-
-	reqbody := []byte(`{
+	var data = strings.NewReader(`{
 	"alternative_options_photos": true,
-	"category_id": 125,
+	"category_id": 127,
 	"brands_filter": [],
 	"stock_filter": [],
 	"specs_filter": [],
 	"sort": "default"
-	`)
+	}`)
 
-	req, err := http.NewRequest(http.MethodPost, "https://www.klimwinkel.nl/api/queryProducts", bytes.NewBuffer(reqbody))
+	req, err := http.NewRequest("POST", "https://www.klimwinkel.nl/api/queryProducts", data)
 	if err != nil {
-		fmt.Println("error while building req")
+		log.Fatal(err)
 	}
 
-	// we want a json response other wise we will get html 
-	req.Header.Set("Content-Type","application/json;charset=utf-8")
+	req.Header.Set("Content-Type", "application/json;charset=utf-8")
+	// TODO make shure these wont expire
+	req.Header.Set("Cookie", "fzshoprest_session=eyJpdiI6Ik1sR0tnQlBOU0wwL2ZBdHU5bm1NZXc9PSIsInZhbHVlIjoiZm1XZE5MeGE5Q1hTRjdnQTFzSU1IQ0hDTDlEUUtZUzg5WTh6VnhUSE9xS3RKdDVUK1I0YjltbU1rOE91TmcvOUJpVnNydDd3SVY2TnlHUmgxdnhUdzd5OG1saDRiVUJwTWcreTQ3ZHFtQU9hZHM3a08xM1BPdjRBNm8zUkpURk8iLCJtYWMiOiIxZjkyYzgzNTM5YTk4MzRlZWQ1MjYwYjYwODU2OTAyZDQ3NmIyZmRkYmVhNTE1MjQ3ZTY0YjdhZjlmNjYzMTZhIiwidGFnIjoiIn0%253D; i18n_redirected=nl; auth.strategy=local")
 
-	response, err := client.Do(req)
+	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("error while fetching catagories")
+		log.Fatal(err)
 	}
 
-	defer response.Body.Close()
+	defer resp.Body.Close()
 
-	fmt.Println("response Status:", response.Status)
-	fmt.Println("response Headers:", response.Header)
-	body, _ := io.ReadAll(response.Body)
-	fmt.Println("response Body:", string(body))
+	bodyText, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
 
+	fmt.Printf("%s\n", bodyText)
 }
