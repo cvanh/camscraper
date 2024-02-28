@@ -83,4 +83,4 @@ to start the api/frontend run:
 - [ ] setup scrapers on docker and add it to make file
 - [ ] setup api/fe and add to docker and makefile
 - [ ] setup logging
-- [ ] setup docker for scrapers
+- [x] setup docker for scrapers
