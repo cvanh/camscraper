@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/IBM/sarama"
 )
 
 // TODO auto generated please cleanup
@@ -29,8 +31,8 @@ type KlimwinkelCatResponse struct {
 			ShortDescription         string        `json:"short_description"`
 			Price                    float64       `json:"price"`
 			PriceGross               float64       `json:"price_gross"`
-			OldPrice                 float32   `json:"old_price"`
-			OldPriceGross            float32   `json:"old_price_gross"`
+			OldPrice                 float32       `json:"old_price"`
+			OldPriceGross            float32       `json:"old_price_gross"`
 			StockStatus              int           `json:"stock_status"`
 			Photo                    string        `json:"photo"`
 			PhotoFull                string        `json:"photo_full"`
@@ -263,18 +265,36 @@ type KlimwinkelProductResponse struct {
 	} `json:"data"`
 }
 
-func main() {
-	products := getCatagory()
-	for _,v := range(products.Products.Data){
-		data := getProduct(v.ID)
-		log.Println("%v",data.Data.Schema)
-	}
-	
+var brokers = []string{"127.0.0.1:9092"}
+// https://github.com/0sc/sarama-example/blob/master/producer.go
+func newProducer() (sarama.SyncProducer, error) {
+	config := sarama.NewConfig()
+	config.Producer.Partitioner = sarama.NewRandomPartitioner
+	config.Producer.RequiredAcks = sarama.WaitForAll
+	config.Producer.Return.Successes = true
+	producer, err := sarama.NewSyncProducer(brokers, config)
+
+	return producer, err
 }
 
-func getProduct(id int) KlimwinkelProductResponse{
+func main() {
+	products := getCatagory()
+	for _, v := range products.Products.Data {
+		data := getProduct(v.ID)
+		log.Println("%v", data.Data.Schema)
+
+		msg := &sarama.ProducerMessage{
+			Topic:     topic,
+			Partition: -1,
+			Value:     sarama.StringEncoder(message),
+		}
+	}
+
+}
+
+func getProduct(id int) KlimwinkelProductResponse {
 	client := &http.Client{}
-	
+
 	url := fmt.Sprint("https://www.klimwinkel.nl/api/products/", id)
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -298,16 +318,15 @@ func getProduct(id int) KlimwinkelProductResponse{
 		log.Fatal(err)
 	}
 
-	var Product KlimwinkelProductResponse 
+	var Product KlimwinkelProductResponse
 	json.Unmarshal(bodyText, &Product)
-
 
 	return Product
 
 }
 
 // get list of products by catagory number(125 for nut and cams on klimwinkel)
-func getCatagory()  KlimwinkelCatResponse{
+func getCatagory() KlimwinkelCatResponse {
 	client := &http.Client{}
 	data := strings.NewReader(`{
 	"alternative_options_photos": true,
@@ -339,9 +358,8 @@ func getCatagory()  KlimwinkelCatResponse{
 		log.Fatal(err)
 	}
 
-	var Products KlimwinkelCatResponse 
+	var Products KlimwinkelCatResponse
 	json.Unmarshal(bodyText, &Products)
-
 
 	return Products
 }
