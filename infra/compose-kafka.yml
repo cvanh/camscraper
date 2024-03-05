@@ -44,5 +44,5 @@ services:
       - 8080:8080
     environment:
       DYNAMIC_CONFIG_ENABLED: 'true'
-    # volumes:
-      # - ./kui:/etc/kafkaui:rw
+    volumes:
+      - ./kui:/etc/kafkaui:rw

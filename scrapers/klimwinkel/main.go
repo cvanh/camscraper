@@ -266,28 +266,37 @@ type KlimwinkelProductResponse struct {
 }
 
 var brokers = []string{"127.0.0.1:9092"}
-// https://github.com/0sc/sarama-example/blob/master/producer.go
-func newProducer() (sarama.SyncProducer, error) {
+
+func main() {
 	config := sarama.NewConfig()
 	config.Producer.Partitioner = sarama.NewRandomPartitioner
 	config.Producer.RequiredAcks = sarama.WaitForAll
 	config.Producer.Return.Successes = true
 	producer, err := sarama.NewSyncProducer(brokers, config)
 
-	return producer, err
-}
+	if err != nil {
+		log.Fatalf("error while connecting to kafka %v",err)
+	}
 
-func main() {
+
 	products := getCatagory()
 	for _, v := range products.Products.Data {
+		_ = v
 		data := getProduct(v.ID)
 		log.Println("%v", data.Data.Schema)
 
+		productSchema, _ := json.Marshal(data.Data.Schema)
+
 		msg := &sarama.ProducerMessage{
-			Topic:     topic,
+			Topic:     "scraped_data",
 			Partition: -1,
-			Value:     sarama.StringEncoder(message),
+			Value:	sarama.StringEncoder(productSchema), 
 		}
+
+		_,_,err := producer.SendMessage(msg)
+		
+
+		log.Println("%v",err)
 	}
 
 }
