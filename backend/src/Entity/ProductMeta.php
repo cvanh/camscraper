@@ -3,13 +3,13 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\ProductsMetaRepository;
+use App\Repository\ProductMetaRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ProductsMetaRepository::class)]
+#[ORM\Entity(repositoryClass: ProductMetaRepository::class)]
 #[ApiResource]
-class ProductsMeta
+class ProductMeta
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
