@@ -88,12 +88,15 @@ func main() {
 	}
 
 	products := getCatagory()
+
+	log.Println("got list of product id's to scrape")
 	for _, v := range products.Products.Data {
 		_ = v
 		data := getProduct(v.ID)
 
 		productSchema, _ := json.Marshal(data.Data.Schema)
 
+		log.Println("sending 1 product to kafka")
 		msg := &sarama.ProducerMessage{
 			Topic:     "scraped_data",
 			Headers:   []sarama.RecordHeader{
