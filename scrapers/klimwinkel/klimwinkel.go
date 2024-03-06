@@ -73,6 +73,8 @@ type KlimwinkelProductResponse struct {
 	} `json:"data"`
 }
 
+const httpUA = "constantijn's klimwinkel scraper, constantijn@vanhartesveldt.nl"
+
 // TODO should be changable when ran
 var brokers = []string{"127.0.0.1:9092"}
 
@@ -129,6 +131,7 @@ func getProduct(id int) KlimwinkelProductResponse {
 	req.Header.Set("Content-Type", "application/json;charset=utf-8")
 	// TODO make shure these wont expire
 	req.Header.Set("Cookie", "fzshoprest_session=eyJpdiI6Ik1sR0tnQlBOU0wwL2ZBdHU5bm1NZXc9PSIsInZhbHVlIjoiZm1XZE5MeGE5Q1hTRjdnQTFzSU1IQ0hDTDlEUUtZUzg5WTh6VnhUSE9xS3RKdDVUK1I0YjltbU1rOE91TmcvOUJpVnNydDd3SVY2TnlHUmgxdnhUdzd5OG1saDRiVUJwTWcreTQ3ZHFtQU9hZHM3a08xM1BPdjRBNm8zUkpURk8iLCJtYWMiOiIxZjkyYzgzNTM5YTk4MzRlZWQ1MjYwYjYwODU2OTAyZDQ3NmIyZmRkYmVhNTE1MjQ3ZTY0YjdhZjlmNjYzMTZhIiwidGFnIjoiIn0%253D; i18n_redirected=nl; auth.strategy=local")
+	req.Header.Set("User-Agent", httpUA)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -169,6 +172,7 @@ func getCatagory() KlimwinkelCatResponse {
 	req.Header.Set("Content-Type", "application/json;charset=utf-8")
 	// TODO make shure these wont expire
 	req.Header.Set("Cookie", "fzshoprest_session=eyJpdiI6Ik1sR0tnQlBOU0wwL2ZBdHU5bm1NZXc9PSIsInZhbHVlIjoiZm1XZE5MeGE5Q1hTRjdnQTFzSU1IQ0hDTDlEUUtZUzg5WTh6VnhUSE9xS3RKdDVUK1I0YjltbU1rOE91TmcvOUJpVnNydDd3SVY2TnlHUmgxdnhUdzd5OG1saDRiVUJwTWcreTQ3ZHFtQU9hZHM3a08xM1BPdjRBNm8zUkpURk8iLCJtYWMiOiIxZjkyYzgzNTM5YTk4MzRlZWQ1MjYwYjYwODU2OTAyZDQ3NmIyZmRkYmVhNTE1MjQ3ZTY0YjdhZjlmNjYzMTZhIiwidGFnIjoiIn0%253D; i18n_redirected=nl; auth.strategy=local")
+	req.Header.Set("User-Agent", httpUA)
 
 	resp, err := client.Do(req)
 	if err != nil {
