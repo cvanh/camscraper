@@ -6,8 +6,8 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE:-app}
         # You should definitely change the password in production
       # MYSQL_RANDOM_ROOT_PASSWORD: "true"
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-!ChangeMe!}
-      MYSQL_USER: ${MYSQL_USER:-app}
+      MYSQL_ROOT_PASSWORD: passy 
+      MYSQL_USER: app 
       volumes:
         -database_data:/var/lib/mysql:rw
 

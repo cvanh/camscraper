@@ -30,6 +30,8 @@ RUN set -eux; \
 		opcache \
 		zip \
 	;
+# https://stackoverflow.com/questions/66626974/symfony-5-an-exception-occurred-in-driver-could-not-find-driver
+RUN docker-php-ext-install pdo pdo_mysql
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 ENV COMPOSER_ALLOW_SUPERUSER=1
@@ -57,6 +59,7 @@ RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 RUN set -eux; \
 	install-php-extensions \
 		xdebug \
+	pdo_mysql \ 
 	;
 
 COPY --link frankenphp/conf.d/app.dev.ini $PHP_INI_DIR/conf.d/
