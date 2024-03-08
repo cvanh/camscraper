@@ -1,13 +1,11 @@
 services:
 ###> doctrine/doctrine-bundle ###
   database:
-    image: mysql:${MYSQL_VERSION:-8}
+    image: mariadb 
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-app}
-        # You should definitely change the password in production
-      # MYSQL_RANDOM_ROOT_PASSWORD: "true"
-      MYSQL_ROOT_PASSWORD: passy 
-      MYSQL_USER: app 
+      MARIADB_DATABASE: app 
+      MARIADB_ROOT_PASSWORD: passy 
+      MARIADB_USER: app 
       volumes:
         -database_data:/var/lib/mysql:rw
 
@@ -21,12 +19,6 @@ services:
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
       TRUSTED_PROXIES: ${TRUSTED_PROXIES:-127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16}
       TRUSTED_HOSTS: ^${SERVER_NAME:-example\.com|localhost}|php$$
-      # Run "composer require symfony/orm-pack" to install and configure Doctrine ORM
-      DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-15}&charset=${POSTGRES_CHARSET:-utf8}
-      # Run "composer require symfony/mercure-bundle" to install and configure the Mercure integration
-      MERCURE_URL: ${CADDY_MERCURE_URL:-http://php/.well-known/mercure}
-      MERCURE_PUBLIC_URL: https://${SERVER_NAME:-localhost}/.well-known/mercure
-      MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
       # The two next lines can be removed after initial installation
       SYMFONY_VERSION: ${SYMFONY_VERSION:-}
       STABILITY: ${STABILITY:-stable}
